@@ -25,8 +25,23 @@ public class ConstantUnitTest {
 	public void GivenTwoConstants_CheckIsEqual() {
 		Constant c1 = new Constant ((float) 3.2);
 		Constant c2 = new Constant ((float) 3.2);
-		
-		assertTrue(c1.equals(c2));
+		assertTrue(c1.equal(c2));
 		
 	}
+	
+	@Test
+	public void GivenTwoConstants_CheckAreDifferent() {
+		Constant c1 = new Constant ((float) 1.8);
+		Constant c2 = new Constant ((float) 3.2);
+		assertFalse(c1.equal(c2));
+	}
+
+	@Test
+	public void GivenConstant_CreateAClon() {
+	
+		Constant c1 = new Constant ((float) 1.8);
+		Constant c2 = c1.clon();
+		assertTrue(c1.equal(c2));	
+	}
 }
+
