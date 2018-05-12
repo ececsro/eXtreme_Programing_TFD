@@ -24,51 +24,67 @@ public class VariableUnitTest {
 	
 	@Test
 	public void GivenOneVariable_CheckHasTheRightName() {
-		Variable v = new Variable ((float)(2.3),"distancia");
-		assertTrue (v.hasName("distancia"));
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		assertTrue (varSUT.hasName("x"));
 	}	
 	
 	@Test
 	public void GivenNameSet_CheckIsOneOfThem() {
-		Variable v = new Variable ((float)(2.3),"longitud");
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
 		Set<String> nameSet = new HashSet<String>();
-		nameSet.add("altura");
-		nameSet.add("peso");
-		nameSet.add("longitud");
+		nameSet.add("x");
+		nameSet.add("y");
+		nameSet.add("z");
 	
-		assertTrue (v.hasName(nameSet));
+		assertTrue (varSUT.hasName(nameSet));
 	}
 	
 	
 	@Test
 	public void GivenTwoVariables_CheckAreEqual() {
-		Variable v1 = new Variable ((float) 3.2, "longitud");
-		Variable v2 = new Variable ((float) 3.2, "longitud");
-		assertTrue(v1.equal(v2));
-		
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		Variable varAux = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		assertTrue(varSUT.equal(varAux));		
 	}
 	
 	@Test
-	public void GivenTwoVariables_CheckAreDifferent() {
-		Variable c1 = new Variable ((float) 1.8, "longitud");
-		Variable c2 = new Variable ((float) 3.2, "longitud");
-		assertFalse(c1.equal(c2));
+	public void GivenTwoVariables_constantsAreDifferent_CheckAreDifferent() {
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		Variable varAux = new VariableTestBuilder().constantValue(2).nameValue("x").build();
+		assertFalse(varSUT.equal(varAux));
+	}
+
+	@Test
+	public void GivenTwoVariables_namesAreDifferent_CheckAreDifferent() {
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		Variable varAux = new VariableTestBuilder().constantValue(1).nameValue("y").build();
+		assertFalse(varSUT.equal(varAux));
 	}
 	
 	@Test
 	public void GivenVariable_CreateAClon() {
 		
-		Variable v1 = new Variable ((float) 1.8, "longitud");
-		Variable v2 = v1.clon();
-		assertTrue(v1.equal(v2));	
+		Variable varSUT = new VariableTestBuilder().constantValue(1).nameValue("x").build();
+		Variable varAux = varSUT.clon();
+		assertTrue(varSUT.equal(varAux));	
 	}
 	
 	@Test
-	public void GivenVariable_convertToString() {
-		
-		Variable v1 = new Variable ((float) 1.8, "longitud");
-		assertEquals(v1.toString(), new String("1.8"+"longitud"));	
+	public void GivenVariable_constantIsInteger_convertToString() {
+		Variable varSUT = new VariableTestBuilder().constantValue(2).nameValue("x").build();		
+		assertEquals(varSUT.toString(), "2x");	
+    }
+
+	@Test
+	public void GivenVariable_constantWithDecimalPart_convertToString() {
+		Variable varSUT = new VariableTestBuilder().constantValue((float)1.8).nameValue("x").build();		
+		assertEquals(varSUT.toString(), new String("1.8x"));	
     }
 	
+	@Test
+	public void GivenVariable_constantWithNegativeAndDecimalPart_convertToString() {
+		Variable varSUT = new VariableTestBuilder().constantValue((float)-1.8).nameValue("x").build();		
+		assertEquals(varSUT.toString(), new String("-1.8x"));	
+    }
 }
 

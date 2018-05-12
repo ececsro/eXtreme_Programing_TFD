@@ -23,75 +23,80 @@ import org.junit.runners.Parameterized.Parameters;
 public class TermUnitTest {
 	
 	@Test
-	public void GivenOneTerm_MultiplyByValue() {
-		Term t = new Variable ((float)(2.3),"distancia");
-		
-		assertEquals(t.getValue()*2, 4.6f, 0000.1);
+	public void GivenOneTermVariable_MultiplyByValue() {
+		Term termSUT = new VariableTestBuilder().constantValue((float) 2.3).build();
+		float valueToMultiply = 2;
+		assertEquals(termSUT.multiply(valueToMultiply).getValue(), 4.6f, 0000.1);
 	}	
 	
 	@Test
 	public void GivenOneConstantTerm_HasNameIsFalse() {
-		Term t = new Constant ((float)(2.3));
+		Term termSUT = new ConstantTestBuilder().build();
 		
-		String name="altura";
+		String name="x";
 		
-		assertFalse(t.hasName(name));
+		assertFalse(termSUT.hasName(name));
 	}	
 	
 	@Test
 	public void GivenOneConstantTerm_HasNameSetIsFalse() {
-		Term t = new Constant ((float)(2.3));
+		Term termSUT = new ConstantTestBuilder().build();
 
 		Set<String> nameSet = new HashSet<String>();
-		nameSet.add("altura");
-		nameSet.add("peso");
-		nameSet.add("longitud");
+		nameSet.add("x");
+		nameSet.add("y");
+		nameSet.add("z");
 		
-		assertFalse(t.hasName(nameSet));
+		assertFalse(termSUT.hasName(nameSet));
 	}	
 	
-	
 	@Test
-	public void GivenNameSet_CheckIsOneOfThem() {
-		Variable v = new Variable ((float)(2.3),"longitud");
+	public void GivenVariableTerm_GivenNameSet_CheckNameIsOneOfThem() {
+		Term termSUT = new VariableTestBuilder().nameValue("x").build();
 		Set<String> nameSet = new HashSet<String>();
-		nameSet.add("altura");
-		nameSet.add("peso");
-		nameSet.add("longitud");
+		nameSet.add("x");
+		nameSet.add("y");
+		nameSet.add("z");
 	
-		assertTrue (v.hasName(nameSet));
-	}
-	
-	
-	@Test
-	public void GivenTwoVariables_CheckAreEqual() {
-		Variable v1 = new Variable ((float) 3.2, "longitud");
-		Variable v2 = new Variable ((float) 3.2, "longitud");
-		assertTrue(v1.equal(v2));
+		assertTrue(termSUT.hasName(nameSet));
 		
 	}
 	
 	@Test
-	public void GivenTwoVariables_CheckAreDifferent() {
-		Variable c1 = new Variable ((float) 1.8, "longitud");
-		Variable c2 = new Variable ((float) 3.2, "longitud");
-		assertFalse(c1.equal(c2));
+	public void GivenVariableTerm_GivenNameSet_CheckNameIsNoneOfThem() {
+		Term termSUT = new VariableTestBuilder().nameValue("w").build();
+		Set<String> nameSet = new HashSet<String>();
+		nameSet.add("x");
+		nameSet.add("y");
+		nameSet.add("z");
+	
+		assertFalse(termSUT.hasName(nameSet));
+	}
+
+	@Test
+	public void GivenVariableTerm_GivenEmptyNameSet_CheckNameIsNoneOfThem() {
+		Term termSUT = new VariableTestBuilder().nameValue("w").build();
+		Set<String> nameSet = new HashSet<String>();
+	
+		assertFalse(termSUT.hasName(nameSet));
+	}
+
+	@Test
+	public void GivenConstantTerm_PositiveInteger_ConvertToString() {
+		Term termSUT = new ConstantTestBuilder().constantValue(2).build();	
+		assertEquals(termSUT.toString(), "2");	
+	}
+
+	@Test
+	public void GivenConstantTerm_NegativeInteger_ConvertToString() {
+		Term termSUT = new ConstantTestBuilder().constantValue(-2).build();		
+		assertEquals(termSUT.toString(), "-2");	
 	}
 	
 	@Test
-	public void GivenVariable_CreateAClon() {
-		
-		Variable v1 = new Variable ((float) 1.8, "longitud");
-		Variable v2 = v1.clon();
-		assertTrue(v1.equal(v2));	
+	public void GivenConstantTerm_NegativeDecimalPart_ConvertToString() {
+		Term termSUT = new ConstantTestBuilder().constantValue(-1.8f).build();		
+		assertEquals(termSUT.toString(), "-1.8");	
 	}
-	
-	@Test
-	public void GivenVariable_convertToString() {
-		
-		Variable v1 = new Variable ((float) 1.8, "longitud");
-		assertEquals(v1.toString(), new String("1.8"+"longitud"));	
-    }
-	
 }
 

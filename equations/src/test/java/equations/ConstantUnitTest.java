@@ -21,27 +21,36 @@ import org.junit.runners.Parameterized.Parameters;
 public class ConstantUnitTest {
 	
 	
+	
 	@Test
 	public void GivenTwoConstants_CheckIsEqual() {
-		Constant c1 = new Constant ((float) 3.2);
-		Constant c2 = new Constant ((float) 3.2);
+		ConstantTestBuilder constantBuilder = new ConstantTestBuilder();
+		Constant c1 = constantBuilder.constantValue(equalValue(1)).build();
+		Constant c2 = constantBuilder.constantValue(equalValue(1)).build();
 		assertTrue(c1.equal(c2));
-		
 	}
 	
 	@Test
 	public void GivenTwoConstants_CheckAreDifferent() {
-		Constant c1 = new Constant ((float) 1.8);
-		Constant c2 = new Constant ((float) 3.2);
+		ConstantTestBuilder constantBuilder = new ConstantTestBuilder();
+		Constant c1 = constantBuilder.constantValue(differentValue(1)).build();
+		Constant c2 = constantBuilder.constantValue(differentValue(2)).build();
 		assertFalse(c1.equal(c2));
 	}
 
 	@Test
 	public void GivenConstant_CreateAClon() {
-	
-		Constant c1 = new Constant ((float) 1.8);
+		ConstantTestBuilder constantBuilder = new ConstantTestBuilder();
+		Constant c1 = constantBuilder.constantValue(3).build();
 		Constant c2 = c1.clon();
 		assertTrue(c1.equal(c2));	
+	}
+	
+	private float equalValue (float value) {
+		return value;
+	}
+	private float differentValue (float value) {
+		return value;
 	}
 }
 

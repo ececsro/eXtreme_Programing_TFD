@@ -1,5 +1,7 @@
 package equations;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 public class Variable extends Term {
@@ -34,11 +36,11 @@ public class Variable extends Term {
 	}
 
 	public String toString() {
-		return String.valueOf(this.value)+this.name;
+		return setDecimalFormat().format(this.value)+this.name;
 	}
+	
 
 	public Variable clon() {
-
 		return new Variable(this.value, this.name);
 	}
 
