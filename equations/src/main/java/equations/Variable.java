@@ -31,7 +31,7 @@ public class Variable extends Term {
 		    return false; 
 	}
 
-	private String getName() {
+	public String getName() {
 		return this.name;
 	}
 

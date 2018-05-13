@@ -10,7 +10,11 @@ abstract class Term {
 	public float getValue() {
 		return value;
 	}
-	
+
+	public String getName() {
+		return null;
+	}
+
 	public boolean hasName(String name) {
 		return false;
 	}

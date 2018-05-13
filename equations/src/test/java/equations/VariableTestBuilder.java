@@ -7,6 +7,10 @@ public class VariableTestBuilder extends TermTestBuilder {
 	public VariableTestBuilder () {	
 		this.name="";
 	}
+
+    public VariableTestBuilder constantValue(double doubleValue) {
+		return (VariableTestBuilder) super.constantValue(doubleValue);
+	}
 	
 	public VariableTestBuilder nameValue(String name) {
 		this.name = name;

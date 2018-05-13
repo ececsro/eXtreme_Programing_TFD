@@ -7,12 +7,11 @@ public class ConstantTestBuilder extends TermTestBuilder {
 		this.value=0;		
 	}
 	
-	public ConstantTestBuilder constantValue(float value) {
-		this.value = value;
-		return this;
+    public ConstantTestBuilder constantValue(double doubleValue) {
+		return (ConstantTestBuilder) super.constantValue(doubleValue);
 	}
 	
 	public Constant build() {
-		return (new Constant (this.value));
+		return (new Constant(this.value));
 	}
 }

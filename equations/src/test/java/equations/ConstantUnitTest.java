@@ -1,5 +1,7 @@
 package equations;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
@@ -46,10 +48,18 @@ public class ConstantUnitTest {
 		assertTrue(c1.equal(c2));	
 	}
 	
-	private float equalValue (float value) {
+
+	@Test
+	public void GivenConstant_WhenGetName_ThenIsNull() {
+		ConstantTestBuilder constantBuilder = new ConstantTestBuilder();
+		Constant c1 = new ConstantTestBuilder().constantValue(3).build();	
+		assertThat(c1.getName(), is(nullValue()));	
+	}
+
+	private double equalValue (double value) {
 		return value;
 	}
-	private float differentValue (float value) {
+	private double differentValue (double value) {
 		return value;
 	}
 }

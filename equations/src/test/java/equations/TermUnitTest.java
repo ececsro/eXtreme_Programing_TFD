@@ -32,9 +32,7 @@ public class TermUnitTest {
 	@Test
 	public void GivenOneConstantTerm_HasNameIsFalse() {
 		Term termSUT = new ConstantTestBuilder().build();
-		
 		String name="x";
-		
 		assertFalse(termSUT.hasName(name));
 	}	
 	

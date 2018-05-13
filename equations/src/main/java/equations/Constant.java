@@ -16,4 +16,8 @@ public class Constant extends Term {
 		return true;
 	}
 
+	public String getName() {
+		return null;
+	}
+
 }

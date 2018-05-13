@@ -8,12 +8,12 @@ public abstract class TermTestBuilder {
 		this.value=0;
 	}
 	
-	public TermTestBuilder constantValue(float value) {
-		this.value = value;
+	protected TermTestBuilder constantValue(double doubleValue) {
+		this.value = (float) doubleValue;
 		return this;
 	}
 	
-	public VariableTestBuilder nameValue(String string) {
+	protected VariableTestBuilder nameValue(String string) {
 		return null;
 	}
 
