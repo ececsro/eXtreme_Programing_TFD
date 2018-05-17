@@ -82,7 +82,7 @@ public class TermUnitTest {
 	@Test
 	public void GivenConstantTerm_PositiveInteger_ConvertToString() {
 		Term termSUT = new ConstantTestBuilder().constantValue(2).build();	
-		assertEquals(termSUT.toString(), "2");	
+		assertEquals(termSUT.toString(), "+2");	
 	}
 
 	@Test

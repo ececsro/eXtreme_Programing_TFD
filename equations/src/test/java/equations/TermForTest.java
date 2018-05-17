@@ -18,4 +18,15 @@ public class TermForTest {
 	public String getNameValue() {
 		return nameValue;
 	}
+	
+	public String toString() {
+		Term realTerm;
+		if (this.nameValue == null) {
+			realTerm = new Constant (this.constantValue);
+		}
+		else {
+			realTerm = new Variable(this.constantValue,this.nameValue);			
+		}
+		return realTerm.toString(); 
+	}
 }

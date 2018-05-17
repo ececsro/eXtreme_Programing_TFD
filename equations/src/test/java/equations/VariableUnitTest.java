@@ -72,13 +72,13 @@ public class VariableUnitTest {
 	@Test
 	public void GivenVariable_constantIsInteger_convertToString() {
 		Variable varSUT = new VariableTestBuilder().constantValue(2).nameValue("x").build();		
-		assertEquals(varSUT.toString(), "2x");	
+		assertEquals(varSUT.toString(), "+2x");	
     }
 
 	@Test
 	public void GivenVariable_constantWithDecimalPart_convertToString() {
 		Variable varSUT = new VariableTestBuilder().constantValue((float)1.8).nameValue("x").build();		
-		assertEquals(varSUT.toString(), new String("1.8x"));	
+		assertEquals(varSUT.toString(), new String("+1.8x"));	
     }
 	
 	@Test
