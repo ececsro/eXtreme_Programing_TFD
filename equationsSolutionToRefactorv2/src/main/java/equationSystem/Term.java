@@ -1,5 +1,7 @@
 package equationSystem;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 public abstract class Term {
@@ -34,9 +36,17 @@ public abstract class Term {
 	
 	@Override
 	public String toString() {
-		return " " + (value>=0?"+":"") + value;
+		return setDecimalFormat().format(this.value);
 	}
-	
+
+	protected DecimalFormat setDecimalFormat() {
+		DecimalFormat df = new DecimalFormat("+#.##;-#");
+		df.setRoundingMode(RoundingMode.HALF_UP);
+		return df;
+	}
+
 	public abstract void dispatch(TermVisitor termVisitor);
+
+	public abstract String getName();
 
 }

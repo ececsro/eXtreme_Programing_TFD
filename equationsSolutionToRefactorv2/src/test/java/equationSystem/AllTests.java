@@ -8,7 +8,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	EquationSystemTest.class, 
 	EquationTest.class,
-	ExpressionTest.class })
+	ExpressionTest.class,
+	ExpressionUnitTest.class,
+	TermUnitTest.class,
+	VariableUnitTest.class,
+	ConstantUnitTest.class})
 public class AllTests {
 
 }

@@ -7,4 +7,6 @@ public class SubtitutionMethod extends SolutionMethod {
 		// TODO Auto-generated method stub
 	}
 
+
+
 }

@@ -1,7 +1,9 @@
 package equationSystem;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,10 +24,19 @@ public class EquationTest {
 	}
 
 	@Test
-	public void notEqualTest() {
+	public void equalWithDifferentOrderTest() {
 		Equation equation1 = new EquationBuilder().term(-2, "x").term(3, "y")
 				.equals().term(6).build();
 		Equation equation2 = new EquationBuilder().term(3, "y").term(-2, "x")
+				.equals().term(6).build();
+		assertTrue(equation1.equal(equation2));
+	}
+
+	@Test
+	public void notEqualTest() {
+		Equation equation1 = new EquationBuilder().term(-2, "x").term(3, "y")
+				.equals().term(6).build();
+		Equation equation2 = new EquationBuilder().term(6, "y").term(-2, "x")
 				.equals().term(6).build();
 		assertFalse(equation1.equal(equation2));
 	}
@@ -110,6 +121,31 @@ public class EquationTest {
 		Equation result = new EquationBuilder()
 								.term(3, "y").term(-20).equals().term(6).build();
 		assertTrue(result.equal(equation));
+	}
+
+	@Test
+	public void toStringSide1NegativeSide2PositiveTest() {
+		Equation equation = new EquationBuilder()
+								.term(-2, "x").term(3, "y").equals().term(6).build();
+		String expectedResult = "-2x +3y = +6";
+		assertThat(equation.toString(),is(expectedResult));
+	}
+	@Test
+	public void toStringSide1PositiveSide1NegativeTest() {
+		Equation equation = new EquationBuilder()
+								.term(2, "x").term(3, "y")
+								.equals().term(-6,"y").term(2,"x").term(-5).build();
+		String expectedResult = "+2x +3y = -6y +2x -5";
+		assertThat(equation.toString(),is(expectedResult));
+	}
+
+	@Test
+	public void toStringDecimalValuesTest() {
+		Equation equation = new EquationBuilder()
+								.term(2.12345f, "x").term(3.987654321f, "y")
+								.equals().term(-6.0000000001f,"y").term(2.999999999999f,"x").term(-5.555f).build();
+		String expectedResult = "+2.12x +3.99y = -6y +3x -5.55";
+		assertThat(equation.toString(),is(expectedResult));
 	}
 
 }

@@ -1,43 +1,96 @@
 package equationSystem;
 
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReductionMethod extends SolutionMethod {
+	
+	private Map<String, Equation> solutions = new HashMap<String, Equation>();
 
 	@Override
 	public void resolve() {
-		assert equationSystem.getNameSet().size() == 2;
-		Iterator<String> nameIterator = equationSystem.getNameSet().iterator();
-		String firstName = nameIterator.next();	
-		String secondName = nameIterator.next();
-		float value1 = equationSystem.getLast(2).getValue(firstName);
-		float value2 = equationSystem.getLast().getValue(firstName);
-		equationSystem.copyBefore(2);
-		equationSystem.getLast().multiply(value2);
-		equationSystem.copyBefore(2);
-		equationSystem.getLast().multiply(-value1);
-		equationSystem.copyBefore();
-		equationSystem.getLast().add(equationSystem.getLast(3));
-		equationSystem.copyBefore();
-		equationSystem.getLast().simplify(Side.LEFT, firstName);
-		equationSystem.copyBefore();
-		equationSystem.getLast().simplify(Side.LEFT, secondName);
-		equationSystem.copyBefore();
-		equationSystem.getLast().simplify(Side.RIGHT);;
-		equationSystem.copyBefore();
-		equationSystem.getLast().multiply(1/equationSystem.getLast(2).getValue(secondName));
-		equationSystem.seStolution(secondName, equationSystem.getLast());
-		equationSystem.copyBefore(9);
-		equationSystem.getLast().apply(secondName, equationSystem.getLast(2).getValue(Side.RIGHT));
-		equationSystem.copyBefore();
-		equationSystem.getLast().add(new Constant(-equationSystem.getLast(2).getValue(Side.LEFT)));
-		equationSystem.copyBefore();
-		equationSystem.getLast().simplify(Side.LEFT);
-		equationSystem.copyBefore();
-		equationSystem.getLast().simplify(Side.RIGHT);
-		equationSystem.copyBefore();
-		equationSystem.getLast().multiply(1/equationSystem.getLast(2).getValue(firstName));
-		equationSystem.seStolution(firstName, equationSystem.getLast());
+		this.multiplyByCrossedFactors(firstName);
+		this.simplifyFirstName(firstName, secondName);
+		this.getSecondNameSolution(secondName);
+		this.simplifySecondName(secondName);
+		this.getFirstNameSolution(firstName);
+	}
+
+	private void multiplyByCrossedFactors (String firstName) {
+		float value1 = this.getLast(2).getValue(firstName);
+		float value2 = this.getLast().getValue(firstName);
+		
+		this.copyBefore(2);
+		this.getLast().multiply(value2);
+		this.copyBefore(2);
+		this.getLast().multiply(-value1);
+		this.copyBefore();
+		this.getLast().add(this.getLast(3));
+		this.copyBefore();
 	}
 	
+	private void simplifyFirstName(String firstName, String secondName) {
+		this.getLast().simplify(Side.LEFT, firstName);
+		this.copyBefore();
+		this.getLast().simplify(Side.LEFT, secondName);
+		this.copyBefore();
+		this.getLast().simplify(Side.RIGHT);;
+		this.copyBefore();
+	}
+	
+	private void getSecondNameSolution(String secondName) {
+		this.getLast().multiply(1/this.getLast(2).getValue(secondName));
+		this.setSolution(secondName, this.getLast());
+		this.copyBefore(9);
+	}
+	
+	private void simplifySecondName (String secondName) {
+		this.getLast().apply(secondName, this.getLast(2).getValue(Side.RIGHT));
+		this.copyBefore();
+		this.getLast().add(new Constant(-this.getLast(2).getValue(Side.LEFT)));
+		this.copyBefore();
+		this.getLast().simplify(Side.LEFT);
+		this.copyBefore();
+		this.getLast().simplify(Side.RIGHT);
+		this.copyBefore();
+	}
+	
+	private void getFirstNameSolution(String firstName) {
+		this.getLast().multiply(1/this.getLast(2).getValue(firstName));
+		this.setSolution(firstName, this.getLast());
+	}
+	
+	void copyBefore(int before){
+		int index = this.equationList.size() - before;
+		this.add(this.get(index).clon());
+	}
+	
+	void copyBefore(){
+		this.copyBefore(1);
+	}
+	
+	private Equation get(int index){
+		return this.equationList.get(index);
+	}
+
+	public void add(Equation equation) {
+		this.equationList.add(equation);
+	}
+	
+	Equation getLast(int before){
+		int index = this.equationList.size() - before;
+		return this.equationList.get(index);
+	}
+	
+	Equation getLast(){
+		return this.getLast(1);
+	}
+
+	void setSolution(String firstName, Equation equation) {
+		this.solutions.put(firstName, equation);
+	}
+	
+	public float getSolution(String name){
+		return this.solutions.get(name).getValue(Side.RIGHT);
+	}
 }

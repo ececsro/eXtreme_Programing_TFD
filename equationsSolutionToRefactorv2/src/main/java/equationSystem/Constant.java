@@ -17,6 +17,11 @@ public class Constant extends Term {
 	}
 
 	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
 	public void dispatch(TermVisitor termVisitor) {
 		termVisitor.visit(this);
 	}

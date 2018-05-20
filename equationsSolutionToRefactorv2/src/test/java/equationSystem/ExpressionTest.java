@@ -1,7 +1,9 @@
 package equationSystem;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -35,7 +37,8 @@ public class ExpressionTest {
 		Expression expression= new ExpressionBuilder()
 					.term(valueRepeated,variable.getName()).build();
 		expression.add(variable);
-		assertEquals(valueRepeated, expression.getValue(variable.getName()), 0);
+		float expectedValue = 19 + 7;
+		assertEquals(expectedValue, expression.getValue(variable.getName()), 0);
 	}
 	
 	@Test
@@ -61,7 +64,8 @@ public class ExpressionTest {
 		float valueRepeated = 7;
 		Expression expression= new ExpressionBuilder().term(valueRepeated).build();
 		expression.add(constant);
-		assertEquals(valueRepeated, expression.getValue(), 0);
+		float expectedValue = 19 + 7;
+		assertEquals(expectedValue, expression.getValue(), 0);
 	}
 	
 	@Test 
@@ -143,7 +147,8 @@ public class ExpressionTest {
 		expression.simplify();
 		Expression result = new ExpressionBuilder()
 								.term(-12,"x").term(27,"x").term(93).build();
-		assertTrue(result.equal(expression));
+//		assertTrue(result.equal(expression));
+		assertThat(result.toString(), is(expression.toString()));
 	}
 	
 	@Test 
@@ -163,6 +168,7 @@ public class ExpressionTest {
 		expression.simplify();
 		Expression result = new ExpressionBuilder()
 								.term(2,"x").build();
+		assertThat(expression.toString(), is(result.toString()));
 		assertTrue(result.equal(expression));
 	}
 	
@@ -173,7 +179,8 @@ public class ExpressionTest {
 		expression.simplify();
 		Expression result = new ExpressionBuilder()
 								.term(0).build();
-		assertTrue(result.equal(expression));
+		assertThat(expression.toString(), is(result.toString()));
+//		assertTrue(result.equal(expression));
 	}
 	
 	@Test 
@@ -185,7 +192,8 @@ public class ExpressionTest {
 									.term(-23)
 									.term(27,variable.getName())
 									.build();
-		assertEquals(variable.getValue(), expression.getValue(variable.getName()),0);
+		float expectedValue = 3 + 27;
+		assertEquals(expectedValue, expression.getValue(variable.getName()),0);
 	}
 	
 	@Test 
@@ -209,7 +217,8 @@ public class ExpressionTest {
 									.term(27,"y")
 									.term(-23)
 									.build();
-		assertEquals(constant.getValue(), expression.getValue(),0);
+		float expectedValue = 3 + 93 - 23;
+		assertEquals(expectedValue, expression.getValue(),0);
 	}
 	
 	@Test 
@@ -294,16 +303,106 @@ public class ExpressionTest {
 								.term(93).term(-12,"x").term(27,"x").build();
 		assertTrue(expression1.equal(expression2));
 	}
-	
+
 	@Test
-	public void notEqualTest() {
+	public void equalOnlyConstantTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-1).build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(1).term(-2).build();
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalOnlyConstantZeroValueTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-1).term(1).build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(2).term(-2).build();
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalOnlyVariablesTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-1,"x").term(-2,"y").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(-1,"x").term(-2,"y").build();
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalOnlyVariablesZeroValueTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-1,"x").term(1,"x").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(2,"x").term(-2,"x").build();
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalTermsInDifferentOrderTest() {
 		Expression expression1 = new ExpressionBuilder()
 								.term(93).term(-12,"x").term(27,"x").build();
 		Expression expression2 = new ExpressionBuilder()
 								.term(-12,"x").term(27,"x").term(93).build();
-		assertFalse(expression1.equal(expression2));
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalTermsInDifferentOrder2VariablesTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(93).term(-12,"x").term(27,"y").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(-12,"x").term(27,"y").term(93).build();
+		assertTrue(expression1.equal(expression2));
+	}
+
+	@Test
+	public void equalExpressionsAreEquivalentTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(6).term(1,"x").term(1,"x").term(1,"x").term(20,"y").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(3,"x").term(10,"y").term(10,"y").term(2).term(4).build();
+		assertTrue(expression1.equal(expression2));
 	}
 	
+
+	@Test
+	public void notEqualConstantTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-12.1234f).term(27).build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(99).term(99.99999f).build();
+		assertFalse(expression1.equal(expression2));
+	}
+
+	@Test
+	public void notEqualOneVariableTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-12.1234f,"x").term(27,"x").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(99,"x").term(99.99999f,"x").build();
+		assertFalse(expression1.equal(expression2));
+	}
+
+	@Test
+	public void notEqualConstantIsDifferentTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-12.1234f).term(27,"x").term(18,"y").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(99).term(27,"x").term(18,"y").build();
+		assertFalse(expression1.equal(expression2));
+	}
+
+	@Test
+	public void notEqualVariableIsDifferentTest() {
+		Expression expression1 = new ExpressionBuilder()
+								.term(-12.1234f).term(27,"x").term(18,"y").build();
+		Expression expression2 = new ExpressionBuilder()
+								.term(-12.1234f).term(27,"x").term(99,"y").build();
+		assertFalse(expression1.equal(expression2));
+	}
 	@Test
 	public void clonTest() {
 		Expression expression = new ExpressionBuilder()
@@ -315,7 +414,7 @@ public class ExpressionTest {
 	public void toStringTest() {
 		Expression expression = new ExpressionBuilder()
 								.term(93).term(-12,"x").term(27,"x").build();
-		assertEquals(" +93.0 -12.0x +27.0x", expression.toString());
+		assertEquals("+93 -12x +27x", expression.toString());
 	}
 	
 	@Test

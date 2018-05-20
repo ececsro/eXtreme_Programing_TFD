@@ -93,11 +93,15 @@ public class Equation {
 		});
 	}
 	
-	@Override
-	public String toString(){
+	public String toString_old(){
 		return members.get(Side.LEFT) + " =" + members.get(Side.RIGHT);
 	}
 
+	@Override
+	public String toString(){
+		return members.get(Side.LEFT).toString() + " = " + members.get(Side.RIGHT).toString();
+	}
+	
 	public void apply(String name, float value) {
 		for(Side side : Side.values()){
 			if (members.get(side).hasName(name)){
@@ -113,7 +117,4 @@ public class Equation {
 							});
 		this.members = equation.members;
 	}
-
-
-
 }

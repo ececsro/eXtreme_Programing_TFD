@@ -1,10 +1,8 @@
 package equationSystem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class EquationSystem {
@@ -14,14 +12,11 @@ public class EquationSystem {
 	
 	private Set<String> nameSet;
 	
-	private Map<String, Equation> solutions;
-	
 	private SolutionMethod solutionMethod;
 	
 	public EquationSystem(){
 		this.equationList = new ArrayList<Equation>();
 		this.nameSet = new HashSet<String>();
-		this.solutions = new HashMap<String, Equation>();
 	}
 	
 	public void add(Equation equation) {
@@ -33,7 +28,7 @@ public class EquationSystem {
 	
 	public void set(SolutionMethod solutionMethod){
 		this.solutionMethod = solutionMethod;
-		this.solutionMethod.set(this);
+		this.solutionMethod.set(this.equationList);
 	}
 	
 	public void resolve(){
@@ -44,35 +39,6 @@ public class EquationSystem {
 		return nameSet;
 	}
 	
-	private Equation get(int index){
-		return this.equationList.get(index);
-	}
-	
-	Equation getLast(int before){
-		int index = this.equationList.size() - before;
-		return this.equationList.get(index);
-	}
-	
-	Equation getLast(){
-		return this.getLast(1);
-	}	
-	
-	void copyBefore(int before){
-		int index = this.equationList.size() - before;
-		this.add(this.get(index).clon());
-	}
-	
-	void copyBefore(){
-		this.copyBefore(1);
-	}
-	
-	void seStolution(String firstName, Equation equation) {
-		this.solutions.put(firstName, equation);
-	}
-	
-	public float getSolution(String name){
-		return this.solutions.get(name).getValue(Side.RIGHT);
-	}
 	
 	public boolean equal(EquationSystem equationSystem){
 		if (this.equationList.size()!= equationSystem.equationList.size()){

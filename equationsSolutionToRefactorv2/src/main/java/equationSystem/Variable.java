@@ -11,6 +11,7 @@ public class Variable extends Term {
 		this.name = name;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}

@@ -15,10 +15,12 @@ public class EquationSystemTest {
 			.equation().term(2,name1).term(4,name2).equals().term(4)
 			.equation().term(5,name1).term(-9,name2).equals().term(-2)
 			.build();
-		equationSystem.set(new ReductionMethod());
+		ReductionMethod reductionMethod = new ReductionMethod();
+		
+		equationSystem.set(reductionMethod);
 		equationSystem.resolve();
-		assertEquals(0.73684216, equationSystem.getSolution(name1), precission);
-		assertEquals(0.6315789, equationSystem.getSolution(name2), precission);		
+		assertEquals(0.73684216, reductionMethod.getSolution(name1), precission);
+		assertEquals(0.6315789, reductionMethod.getSolution(name2), precission);		
 	}
 
 }

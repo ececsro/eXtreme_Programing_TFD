@@ -1,18 +1,20 @@
 package equationSystem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class Expression {
 
-	private List<Term> termList;
+	List<Term> termList;
 	
 	public Expression() {
 		this.termList = new ArrayList<Term>();
 	}
 	
-	private boolean empty() {
+	boolean empty() {
 		return this.termList.size()==0;
 	}
 	
@@ -32,61 +34,65 @@ public class Expression {
 			term.multiply(value);
 		}
 	}
-	
-	public void simplify(String name){
-		assert this.getNameSet().contains(name);
-		Expression expresion = new Expression();
-		float value = 0;
-		for(Term term : termList){
-			if (term.hasName(name)){
-				value += term.getValue();
-			} else {
-				expresion.add(term.clon());
-			}
-		}
-		if (value!=0){
-			expresion.add(new Variable(value, name));
-		}
-		this.termList = expresion.termList;
-	}
-	
+
 	public void simplify() {
 		assert !this.empty();
-		Set<String> nameSet = this.getNameSet();
-		Expression expresion = new Expression();
-		float value = (float) 0.0;
-		for(Term term : termList){
-			if (term.hasName(nameSet)){
-				expresion.add(term.clon());
-			} else {
-				value += term.getValue();
-			}
-		}
-		if (value != 0 || expresion.termList.size()==0){
-			expresion.add(new Constant(value));
-		}
-		this.termList = expresion.termList;
+		Term simplifiedConstant = new Constant(this.getValue());
+		this.simplify(simplifiedConstant);
+
 	}
-	
-	public float getValue(String name){
-		assert !this.empty();
-		for(Term term : termList){
-			if (term.hasName(name)){
-				return term.getValue();
-			}
-		}
-		return 0;
+
+	public void simplify(String name){
+		assert this.getNameSet().contains(name);
+
+		Term simplifiedVariable = new Variable(this.getValue(name),name);
+		this.simplify(simplifiedVariable);
 	}
-	
+
+	private void simplify(Term termSimplified){
+
+		this.removeSimilarTerms(termSimplified);
+		this.addTerm(termSimplified);
+	}
+
+	private void removeSimilarTerms(Term termSimplified){
+		for (Iterator<Term> itTerm = termList.iterator(); itTerm.hasNext();) {
+			Term term = itTerm.next();
+			if (term.getName() == termSimplified.getName()) {
+				itTerm.remove();
+			}				
+		}
+	}
+
+	private void addTerm(Term termSimplified){
+		if (termSimplified.getValue()!=0 || 
+				(termList.size() == 0 && termSimplified instanceof Constant)) {
+			this.add(termSimplified);			
+		}
+	}
+
 	public float getValue() {
 		assert !this.empty();
-		Set<String> nameSet = this.getNameSet();
-		for(Term term : termList){
-			if (!term.hasName(nameSet)){
-				return term.getValue();
+
+		Term constantToGetValue = new Constant(0);
+		return this.getValue(constantToGetValue);
+	}
+
+	public float getValue(String name) {
+		assert this.getNameSet().contains(name);
+
+		Term VariableToGetValue = new Variable(0,name);
+		return this.getValue(VariableToGetValue);
+	}
+
+	private float getValue(Term termSimilarToGetValue) {
+		float value = 0;
+		for (Term term : termList ) {
+			if (term.getName() == termSimilarToGetValue.getName()) {
+				value = value + term.getValue();
 			}
 		}
-		return 0;
+		return value;
 	}
 	
 	public Set<String> getNameSet() {
@@ -105,30 +111,51 @@ public class Expression {
 	}
 	
 	public void apply(String name, float value) {
-		Expression expresion = new Expression();
-		Constant constant = null;
-		for(Term term : termList){
-			if (term.hasName(name)){
-				constant = new Constant(value*term.getValue());
-			} else {
-				expresion.add(term.clon());
-			}
-		}
-		expresion.termList.add(constant);
-		this.termList = expresion.termList;
+		Term appliedVariable = new Variable(this.getValue(name)*value,name);
+		this.removeSimilarTerms(appliedVariable);
+		Term appliedConstant = new Constant(appliedVariable.getValue());
+		this.addTerm(appliedConstant);
+	}
+		
+	public boolean equal(Expression expressionToCompare) {
+
+		boolean compareEquivalentExpressionsResult; 
+		
+		Set<Term> thisValues = new HashSet<Term>();
+		Set<Term> comparedValues = new HashSet<Term>();
+
+		thisValues = prepareSetOfSimplifiedTerms (this); 
+		comparedValues = prepareSetOfSimplifiedTerms (expressionToCompare); 
+				
+		compareEquivalentExpressionsResult = 
+				(isTermsInAnotherTerms (thisValues, comparedValues) &&
+				isTermsInAnotherTerms (comparedValues, thisValues));
+		
+		return compareEquivalentExpressionsResult;		
 	}
 
-	public boolean equal(Expression expresion) {
-		if (this == expresion)
-			return true;
-		if (expresion == null)
-			return false;
-		if (this.termList.size() != expresion.termList.size())
-			return false;
-		for(int i=0; i<this.termList.size(); i++){
-			if (!this.termList.get(i).equal(expresion.termList.get(i)))
-				return false;
+	private Set<Term> prepareSetOfSimplifiedTerms (Expression expressionToSimplify) {
+		Set<Term> termsValues = new HashSet<Term>();
+		
+		if (expressionToSimplify.termList.size() != 0) {
+			termsValues.add(new Constant(expressionToSimplify.getValue()));
+			for (String name : expressionToSimplify.getNameSet()) {
+				termsValues.add(new Variable(expressionToSimplify.getValue(name),name));
+			}
 		}
+		return termsValues;
+	}
+
+	private boolean isTermsInAnotherTerms (Set<Term> setSource, Set<Term> setSubset ) {
+		for (Term termThis : setSource ) {
+			for (Term termCompare : setSubset) {
+				if (termThis.getName() == termCompare.getName()) {
+					if (termThis.getValue() != termCompare.getValue()) {
+						return false;
+					}
+				}
+			}
+		}		
 		return true;
 	}
 	
@@ -145,9 +172,8 @@ public class Expression {
 	public String toString(){
 		String result = "";
 		for(Term term : this.termList){
-			result += term.toString();
+			result += " " + term.toString();
 		}
-		return result;
+		return result.trim();
 	}
-	
 }

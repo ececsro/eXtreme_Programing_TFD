@@ -15,11 +15,9 @@ public class NamesExpresionAnalyzer implements TermVisitor {
 		}
 	}
 	
-	
 	public void visit(Variable variable) {
 		this.nameSet.add(variable.getName());		
 	}
-
 	
 	public void visit(Constant constant) {		
 	}
@@ -27,5 +25,4 @@ public class NamesExpresionAnalyzer implements TermVisitor {
 	public Set<String> getNameSet() {
 		return nameSet;
 	}
-
 }
