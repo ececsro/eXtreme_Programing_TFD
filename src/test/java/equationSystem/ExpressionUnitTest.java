@@ -464,10 +464,8 @@ public class ExpressionUnitTest {
 		assertThat( exprSUT.hasName(nameZ), is(true));
 	}
 
-	@Ignore
 	@Test
 	public void Given0Term_clon() {
-
 		Expression exprSUT = new Expression();
 
 		Expression exprExpected = exprSUT.clon();

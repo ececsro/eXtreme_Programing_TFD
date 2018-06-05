@@ -48,28 +48,13 @@ public class Fraction {
 		otherFraction.simplify();
 		thisFraction.simplify();
 		
-		if (thisFraction.den != otherFraction.den)
+		if (Math.abs(thisFraction.den) != Math.abs(otherFraction.den))
 			return false;
-		if (thisFraction.num != otherFraction.num)
+		if (Math.abs(thisFraction.num) != Math.abs(otherFraction.num))
 			return false;
-		return true;
-	}
-
-	public boolean equal(Fraction otherFraction) {
-		if (this == otherFraction)
-			return true;
-		if (otherFraction == null)
+		if (Math.signum(thisFraction.num/thisFraction.den) != Math.signum(otherFraction.num/otherFraction.den))
 			return false;
-
-		Fraction thisFraction = this;
-		
-		otherFraction.simplify();
-		thisFraction.simplify();
-		
-		if (thisFraction.den != otherFraction.den)
-			return false;
-		if (thisFraction.num != otherFraction.num)
-			return false;
+				
 		return true;
 	}
 
@@ -132,10 +117,6 @@ public class Fraction {
 	}
 
 	public Fraction invert() {
-		int auxMember;
-		auxMember = num;
-		num = den;
-		den = auxMember;
-		return this;
+		return new Fraction(this.den, this.num);
 	}
 }

@@ -77,7 +77,7 @@ public class Expression {
 
 	private void addTerm(Term termSimplified){
 		Fraction fractionZero = new Fraction (0,1);
-		if (!termSimplified.getValue().equal(fractionZero) ||
+		if (!termSimplified.getValue().equals(fractionZero) ||
 				(termList.size() == 0 && termSimplified instanceof Constant)) {
 			this.add(termSimplified);			
 		}
@@ -180,7 +180,6 @@ public class Expression {
 	}
 	
 	public Expression clon(){
-		assert !this.empty();
 		Expression expresion = new Expression();
 		for(Term term : this.termList){
 			expresion.add(term.clon());

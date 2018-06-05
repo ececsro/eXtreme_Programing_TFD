@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExpressionUnitTest.class,
 	TermUnitTest.class,
 	VariableUnitTest.class,
-	ConstantUnitTest.class})
+	ConstantUnitTest.class,
+	FractionUnitTest.class })
 public class AllTests {
 
 }

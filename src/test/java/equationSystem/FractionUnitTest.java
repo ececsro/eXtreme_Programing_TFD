@@ -38,7 +38,7 @@ public class FractionUnitTest {
 		Fraction fractionAux = new Fraction(8,-5);
 		assertThat(fractionSUT.add(fractionAux).toString() , is("-(31/10)"));
 	}
-	@Ignore
+
 	@Test
 	public void addFractionResultZeroTest() {
 		Fraction fractionSUT = new Fraction(-72,1);
@@ -89,10 +89,17 @@ public class FractionUnitTest {
 	}
 
 	@Test
-	public void simplifyNoNeedToSimplifyTest() {
+	public void simplifyNoNeedToSimplify0Test() {
 		Fraction fractionSUT = new Fraction(0, -1);
 		fractionSUT.simplify();
 		assertThat(fractionSUT.toString() , is("+0"));	
+	}
+
+	@Test
+	public void simplifyNoNeedToSimplifyFractionTest() {
+		Fraction fractionSUT = new Fraction(5, 4);
+		fractionSUT.simplify();
+		assertThat(fractionSUT.toString() , is("+(5/4)"));	
 	}
 
 	@Test
@@ -109,6 +116,34 @@ public class FractionUnitTest {
 		assertThat(fractionSUT.num , equalTo(1));	
 		assertThat(fractionSUT.den , equalTo(-2));
 		assertThat(fractionSUT.toString() , is("-(1/2)"));	
+	}
+
+
+	@Test
+	public void multiplyByInvertedTest() {
+		Fraction fractionSUT = new Fraction(4, 5);
+		Fraction fractionInverted = new Fraction (5,4);
+		fractionSUT = fractionSUT.multiply(fractionInverted);
+		fractionSUT.simplify();
+		assertThat(fractionSUT.num , equalTo(1));	
+		assertThat(fractionSUT.den , equalTo(1));
+		assertThat(fractionSUT.toString() , is("+1"));	
+	}
+
+	@Test
+	public void invertTest() {
+		Fraction fractionSUT = new Fraction(4, 5);
+
+		fractionSUT = fractionSUT.invert();
+		assertThat(fractionSUT.toString() , is("+(5/4)"));	
+	}
+	
+	@Test
+	public void multiplyByInvertTest() {
+		Fraction fractionSUT = new Fraction(4, 5);
+		
+		fractionSUT = fractionSUT.multiply(fractionSUT.invert());
+		assertThat(fractionSUT.toString() , is("+1"));	
 	}
 
 }

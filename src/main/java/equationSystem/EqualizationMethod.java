@@ -8,5 +8,4 @@ public class EqualizationMethod extends SolutionMethod {
 	public void resolve() {
 		
 	}
-
 }
