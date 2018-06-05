@@ -9,26 +9,57 @@ import org.junit.Test;
 
 public class EquationSystemTest {
 
-	@Test
-	public void reductionMethod2Test() {
-		String name1 = "x";
-		String name2 = "y";
-		Fraction expectedName1 = new Fraction(14,19);
-		Fraction expectedName2 = new Fraction(12,19);
+	public void solutionMethod (EquationSystemTestData testData) {
 		
-		EquationSystem equationSystem = new EquationSystemBuilder()
-			.equation().term(2,1,name1).term(4,1,name2).equals().term(4,1)
-			.equation().term(5,1,name1).term(-9,1,name2).equals().term(-2,1)
-			.build();
-		ReductionMethod reductionMethod = new ReductionMethod();
+		testData.equationSystem.set(testData.solutionMethod);
 		
-		equationSystem.set(reductionMethod);
-		equationSystem.resolve();
-		expectedName1.simplify();
-		assertThat(expectedName1, equalTo(reductionMethod.getSolution(name1)));
-		expectedName2.simplify();
-		assertThat(expectedName2, equalTo(reductionMethod.getSolution(name2)));		
+		testData.equationSystem.resolve();
+		testData.expectedValueName1.simplify();
+		assertThat(testData.expectedValueName1, equalTo(testData.solutionMethod.getSolution(testData.name1)));
+		testData.expectedValueName2.simplify();
+		assertThat(testData.expectedValueName2, equalTo(testData.solutionMethod.getSolution(testData.name2)));		
 	}
+
+	@Test
+	public void substitutionMethodTest() {
+		EquationSystemTestData testData = new EquationSystemTestData();
+
+		SubstitutionMethod substitutionMethod = new SubstitutionMethod();
+		testData.solutionMethod = substitutionMethod;
+
+		testData.name1 = "x";
+		testData.name2 = "y";
+		testData.expectedValueName1 = new Fraction(14,19);
+		testData.expectedValueName2 = new Fraction(12,19);
+		
+		testData.equationSystem = new EquationSystemBuilder()
+			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
+			.equation().term(5,1,testData.name1).term(-9,1,testData.name2).equals().term(-2,1)
+			.build();
+		
+		this.solutionMethod(testData);
+	}
+
+	@Test
+	public void reductionMethodTest() {
+		EquationSystemTestData testData = new EquationSystemTestData();
+
+		ReductionMethod reductionMethod = new ReductionMethod();
+		testData.solutionMethod = reductionMethod;
+
+		testData.name1 = "x";
+		testData.name2 = "y";
+		testData.expectedValueName1 = new Fraction(14,19);
+		testData.expectedValueName2 = new Fraction(12,19);
+		
+		testData.equationSystem = new EquationSystemBuilder()
+			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
+			.equation().term(5,1,testData.name1).term(-9,1,testData.name2).equals().term(-2,1)
+			.build();
+		
+		this.solutionMethod(testData);
+	}
+
 
 	@Test(expected=AssertionError.class)
 	public void reductionMethod3ImposibleSolutionTest() {
@@ -46,45 +77,42 @@ public class EquationSystemTest {
 	}
 
 	@Test
-	public void reductionMethod4Test() {
-		String name1 = "x";
-		String name2 = "y";
-		Fraction expectedName1 = new Fraction(-14,1);
-		Fraction expectedName2 = new Fraction(8,1);
+	public void reductionMethod2Test() {
+		EquationSystemTestData testData = new EquationSystemTestData();
 		
-		EquationSystem equationSystem = new EquationSystemBuilder()
-			.equation().term(2,1,name1).term(4,1,name2).equals().term(4,1)
-			.equation().term(5,1,name1).term(9,1,name2).equals().term(2,1)
-			.build();
 		ReductionMethod reductionMethod = new ReductionMethod();
+		testData.solutionMethod = reductionMethod;
 		
-		equationSystem.set(reductionMethod);
-		equationSystem.resolve();
-		expectedName1.simplify();
-		assertThat(expectedName1, equalTo(reductionMethod.getSolution(name1)));
-		expectedName2.simplify();
-		assertThat(expectedName2, equalTo(reductionMethod.getSolution(name2)));		
+		testData.name1 = "x";
+		testData.name2 = "y";
+		testData.expectedValueName1 = new Fraction(-14,1);
+		testData.expectedValueName2 = new Fraction(8,1);
+		
+		testData.equationSystem = new EquationSystemBuilder()
+			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
+			.equation().term(5,1,testData.name1).term(9,1,testData.name2).equals().term(2,1)
+			.build();
+
+		this.solutionMethod(testData);
 	}
 
 	@Test
-	public void SubstitutionMethod4Test() {
-		String name1 = "x";
-		String name2 = "y";
-		Fraction expectedName1 = new Fraction(-14,1);
-		Fraction expectedName2 = new Fraction(8,1);
+	public void SubstitutionMethod2Test() {
+		EquationSystemTestData testData = new EquationSystemTestData();
 		
-		EquationSystem equationSystem = new EquationSystemBuilder()
-			.equation().term(2,1,name1).term(4,1,name2).equals().term(4,1)
-			.equation().term(5,1,name1).term(9,1,name2).equals().term(2,1)
+		testData.solutionMethod  = new SubstitutionMethod();
+		
+		testData.name1 = "x";
+		testData.name2 = "y";
+		testData.expectedValueName1 = new Fraction(-14,1);
+		testData.expectedValueName2 = new Fraction(8,1);
+		
+		testData.equationSystem = new EquationSystemBuilder()
+			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
+			.equation().term(5,1,testData.name1).term(9,1,testData.name2).equals().term(2,1)
 			.build();
-		SubstitutionMethod substitutionMethod = new SubstitutionMethod();
-		
-		equationSystem.set(substitutionMethod);
-		equationSystem.resolve();
-		expectedName1.simplify();
-		assertThat(expectedName1.toString(), equalTo(substitutionMethod.getSolution(name1).toString()));
-		expectedName2.simplify();
-		assertThat(expectedName2.toString(), equalTo(substitutionMethod.getSolution(name2).toString()));		
+
+		this.solutionMethod(testData);
 	}
 
 }

@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class SubstitutionMethod extends SolutionMethod {
 
-	private Map<String, Equation> solutions = new HashMap<String, Equation>();
-
 	@Override
 	public void resolve() {
 		this.getFirstVariable();
@@ -63,42 +61,4 @@ public class SubstitutionMethod extends SolutionMethod {
 		this.getLast().simplify(Side.RIGHT);
 		this.setSolution(this.firstName, this.getLast());		
 	}
-
-	void copyBefore(int before){
-		int index = this.equationList.size() - before;
-		this.add(this.get(index).clon());
-	}
-	
-	void copyBefore(){
-		this.copyBefore(1);
-	}
-
-	private Equation get(int index){
-		return this.equationList.get(index);
-	}
-
-	public void add(Equation equation) {
-		this.equationList.add(equation);
-	}
-
-	Equation getLast(int before){
-		int index = this.equationList.size() - before;
-		return this.equationList.get(index);
-	}
-	
-	Equation getLast(){
-		return this.getLast(1);
-	}
-
-	void setSolution(String firstName, Equation equation) {
-		this.solutions.put(firstName, equation);
-	}
-	
-	public Fraction getSolution(String name){
-		return this.solutions.get(name).getValue(Side.RIGHT);
-	}
-
-
-
-
 }

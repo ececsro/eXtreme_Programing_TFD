@@ -35,7 +35,7 @@ public abstract class Term {
 	}
 	
 	public boolean equal(Term term){
-		return this.getValue().equal(term.getValue()); 
+		return this.getValue().equals(term.getValue()); 
 	}
 
 	public abstract Term clon();

@@ -9,4 +9,7 @@ public class EqualizationMethod extends SolutionMethod {
 		
 	}
 
+	public Fraction getSolution(String name){
+		return new Fraction(0,1);
+	}
 }
