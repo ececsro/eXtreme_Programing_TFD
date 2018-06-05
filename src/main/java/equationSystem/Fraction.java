@@ -132,10 +132,6 @@ public class Fraction {
 	}
 
 	public Fraction invert() {
-		int auxMember;
-		auxMember = num;
-		num = den;
-		den = auxMember;
-		return this;
+		return new Fraction(this.den, this.num);
 	}
 }

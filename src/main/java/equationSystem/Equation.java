@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Equation {
 
-	private Map<Side, Expression> members;
+	Map<Side, Expression> members;
 
 	public Equation() {
 		this(new Expression[]{new Expression(), new Expression()});
@@ -21,6 +21,10 @@ public class Equation {
 		}
 	}
 	
+	public void add(Side side, Expression expression) {
+		this.members.get(side).add(expression);		
+	}
+
 	public void add(Side side, Term term) {
 		this.members.get(side).add(term.clon());		
 	}

@@ -34,7 +34,7 @@ public class ReductionMethod extends SolutionMethod {
 		this.copyBefore();
 		this.getLast().simplify(Side.LEFT, secondName);
 		this.copyBefore();
-		this.getLast().simplify(Side.RIGHT);;
+		this.getLast().simplify(Side.RIGHT);
 	}
 	
 	void getSecondNameSolution(String secondName) {
