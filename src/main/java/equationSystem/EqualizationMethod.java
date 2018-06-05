@@ -8,8 +8,4 @@ public class EqualizationMethod extends SolutionMethod {
 	public void resolve() {
 		
 	}
-
-	public Fraction getSolution(String name){
-		return new Fraction(0,1);
-	}
 }

@@ -38,7 +38,7 @@ public class FractionUnitTest {
 		Fraction fractionAux = new Fraction(8,-5);
 		assertThat(fractionSUT.add(fractionAux).toString() , is("-(31/10)"));
 	}
-	@Ignore
+
 	@Test
 	public void addFractionResultZeroTest() {
 		Fraction fractionSUT = new Fraction(-72,1);

@@ -180,7 +180,6 @@ public class Expression {
 	}
 	
 	public Expression clon(){
-		assert !this.empty();
 		Expression expresion = new Expression();
 		for(Term term : this.termList){
 			expresion.add(term.clon());

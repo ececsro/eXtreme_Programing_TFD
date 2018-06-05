@@ -138,37 +138,6 @@ public class SubstitutionMethodUnitTest {
 		listSize = substitutionMethod.equationList.size();		
 		lastEquation = substitutionMethod.equationList.get(listSize-1);
 		assertThat(lastEquation.toString(), is("+1x = +(19/17)"));	
-		
-//		assertThat(lastEquation.toString(), is("+1x = +(51/17) -(32/17)"));	
-//      assertThat(lastEquation.toString(), is("+1x = +(19/17)"));	        
 	}
-	
-	@Ignore
-	@Test
-	public void multiplyByCrossedFactorsTest() {
-		String name1 = "x";
-		String name2 = "y";
-		EquationSystem equationSystem = new EquationSystemBuilder()
-			.equation().term(2,name1).term(4,name2).equals().term(4)
-			.equation().term(5,name1).term(-9,name2).equals().term(-2)
-			.build();
-		ReductionMethod reductionMethod = new ReductionMethod();
-		
-		equationSystem.set(reductionMethod);
-
-		reductionMethod.multiplyByCrossedFactors(name1);
-
-		int listSize = reductionMethod.equationList.size();
-
-		Equation lastEquation3 = reductionMethod.equationList.get(listSize-3);
-		assertThat(lastEquation3.toString(), is("+10x +20y = +20"));
-
-		Equation lastEquation2 = reductionMethod.equationList.get(listSize-2);
-		assertThat(lastEquation2.toString(), is("-10x +18y = +4"));
-
-		Equation lastEquation = reductionMethod.equationList.get(listSize-1);
-		assertThat(lastEquation.toString(), is("-10x +18y +10x +20y = +4 +20"));
-	}
-
 
 }

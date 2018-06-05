@@ -10,7 +10,6 @@ import org.junit.Test;
 public class EquationSystemTest {
 
 	public void solutionMethod (EquationSystemTestData testData) {
-		
 		testData.equationSystem.set(testData.solutionMethod);
 		
 		testData.equationSystem.resolve();
@@ -24,8 +23,7 @@ public class EquationSystemTest {
 	public void substitutionMethodTest() {
 		EquationSystemTestData testData = new EquationSystemTestData();
 
-		SubstitutionMethod substitutionMethod = new SubstitutionMethod();
-		testData.solutionMethod = substitutionMethod;
+		testData.solutionMethod = new SubstitutionMethod();
 
 		testData.name1 = "x";
 		testData.name2 = "y";
@@ -44,8 +42,7 @@ public class EquationSystemTest {
 	public void reductionMethodTest() {
 		EquationSystemTestData testData = new EquationSystemTestData();
 
-		ReductionMethod reductionMethod = new ReductionMethod();
-		testData.solutionMethod = reductionMethod;
+		testData.solutionMethod = new ReductionMethod();
 
 		testData.name1 = "x";
 		testData.name2 = "y";
@@ -79,39 +76,14 @@ public class EquationSystemTest {
 	@Test
 	public void reductionMethod2Test() {
 		EquationSystemTestData testData = new EquationSystemTestData();
-		
-		ReductionMethod reductionMethod = new ReductionMethod();
-		testData.solutionMethod = reductionMethod;
-		
-		testData.name1 = "x";
-		testData.name2 = "y";
-		testData.expectedValueName1 = new Fraction(-14,1);
-		testData.expectedValueName2 = new Fraction(8,1);
-		
-		testData.equationSystem = new EquationSystemBuilder()
-			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
-			.equation().term(5,1,testData.name1).term(9,1,testData.name2).equals().term(2,1)
-			.build();
-
+		testData.solutionMethod = new ReductionMethod();
 		this.solutionMethod(testData);
 	}
 
 	@Test
 	public void SubstitutionMethod2Test() {
 		EquationSystemTestData testData = new EquationSystemTestData();
-		
 		testData.solutionMethod  = new SubstitutionMethod();
-		
-		testData.name1 = "x";
-		testData.name2 = "y";
-		testData.expectedValueName1 = new Fraction(-14,1);
-		testData.expectedValueName2 = new Fraction(8,1);
-		
-		testData.equationSystem = new EquationSystemBuilder()
-			.equation().term(2,1,testData.name1).term(4,1,testData.name2).equals().term(4,1)
-			.equation().term(5,1,testData.name1).term(9,1,testData.name2).equals().term(2,1)
-			.build();
-
 		this.solutionMethod(testData);
 	}
 
